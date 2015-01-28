@@ -11,13 +11,18 @@ function Player(dWorld, x, y)  {
 	
 	dWorld.stage.addChild(sprite);
 	this.sprite = sprite;
+	this.dWorld = dWorld;
+}
+
+Player.prototype.destroy = function() {
+	this.dWorld.stage.removeChild(this.sprite);
 }
 
 function DWorld(htmlElement) {
 	this.stage = new PIXI.Stage(0x66FF99);
 	this.renderer = new PIXI.WebGLRenderer(800, 600);
 	this.players = [];
-	this.me_id = null;
+	this.meId = null;
 	
 
 	log('Initializing 2DWorld, a Unethical Corp. game');
@@ -34,13 +39,21 @@ function DWorld(htmlElement) {
 	    _dWorld.renderer.render(_dWorld.stage);
 	}
 	
-	this.socket.on('init', function(player_id) {
-		_dWorld.me_id = player_id;
-		console.log("me_id: " + player_id);
+	this.socket.on('init', function(playerId) {
+		_dWorld.meId = playerId;
+		console.log("meId: " + playerId);
 	});
 	
-	this.socket.on('join', function(player_config) {
-		_dWorld.players[player_config.player_id] = new Player(_dWorld, player_config.xPos, player_config.yPos);
+	this.socket.on('join', function(playerInfo) {
+		_dWorld.players[playerInfo.player_id] = new Player(_dWorld, playerInfo.xPos, playerInfo.yPos);
+		log('Player ' + playerInfo.player_id + ' has joined the game');
+	});
+	
+	this.socket.on('leave', function(playerInfo) {
+		log('Player ' + playerInfo.player_id + ' has left the game');
+		var player = _dWorld.players[playerInfo.player_id];
+		player.destroy();
+		_dWorld.players[playerInfo.player_id] = null;
 	});
 	
 	this.socket.on('move', function(move_data) {
@@ -53,12 +66,12 @@ function DWorld(htmlElement) {
 }
 
 DWorld.prototype.keyDown = function(evt) {
-	if(this.me_id == null) {
-		console.log('me_id is null');
+	if(this.meId == null) {
+		console.log('meId is null');
 		return;
 	}
 	
-	var sprite = this.players[this.me_id].sprite;
+	var sprite = this.players[this.meId].sprite;
 	var xDiff = 0; 
 	var yDiff = 0;
 	switch (evt.keyCode) {
