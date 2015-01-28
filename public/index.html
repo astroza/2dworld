@@ -1,0 +1,41 @@
+<html>
+<head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/matter.dev.js"></script>
+<script src="/js/pixi.dev.js"></script>
+<script src="/js/util.js"></script>
+<style>
+	body {
+		margin: 0;
+		padding: 0;
+		background-color: #000000;
+	}
+	
+	div#game {
+		margin-left: 13%;
+	}
+
+	div#console {
+		background-color: #ffffff;
+		color: black;
+		position: relative; 
+	    bottom: 0;
+	    border: 2px solid;
+	    border-radius: 25px;
+		text-align: center;
+	}
+	
+</style>
+
+</head>
+<body>
+	<div id="game"></div>
+	<div id="console">
+	</div>
+	<script src="/js/dworld.js"></script>
+	<script>
+		var game = new DWorld(document.getElementById('game'));
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "2dworldserver",
+  "version": "0.0.1",
+  "description": "Sever for 2dworld",
+  "dependencies": {
+    "express": "~4.10.2"
+  }
+}
