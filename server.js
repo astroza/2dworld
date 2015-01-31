@@ -3,7 +3,8 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-app.use(express.static(__dirname + '/public', 'public'));
+app.use(express.static(__dirname + '/client'));
+app.use(express.static(__dirname + '/shared'));
 
 var free_id = 0;
 var max_players = 12;

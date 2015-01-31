@@ -1,9 +1,12 @@
 <html>
 <head>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/js/matter.dev.js"></script>
-<script src="/js/pixi.dev.js"></script>
 <script src="/js/util.js"></script>
+<script src="/js/Box2D.bundle.js"></script>
+<script src="/js/pixi.dev.js"></script>
+<script src="/js/renderer.js"></script>
+<script src="/js/player.js"></script>
+<script src="/js/game_core.js"></script>
 <style>
 	body {
 		margin: 0;
@@ -37,6 +40,7 @@
 	<script src="/js/dworld.js"></script>
 	<script>
 		var game = new DWorld(document.getElementById('game'));
+		game.init();
 	</script>
 	
 </body>

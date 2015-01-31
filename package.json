@@ -4,6 +4,7 @@
   "description": "Sever for 2dworld",
   "dependencies": {
     "express": "~4.10.2",
-    "socket.io": "~1.3.2"
+    "socket.io": "~1.3.2",
+    "box2dnode": "~2.0.0"
   }
 }
