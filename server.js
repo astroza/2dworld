@@ -42,25 +42,12 @@ io.on('connection', function(socket){
 		players[player_slot] = null;
 	});
 	
-	socket.on('move', function(move_data) {
-		console.log('Player ' + player_slot + ': ' + move_data.xDiff + ' ' + move_data.yDiff);
+	socket.on('input_data', function(input_data) {
 		var player = players[player_slot];
 		if(player != null) {
-			var x = player.xPos + move_data.xDiff;
-
-			if(x < 0 || x > 800) {
-				move_data.xDiff = 0;
-			}
-			var y = player.yPos + move_data.yDiff;
-			if(y < 0 || y > 600) {
-				move_data.yDiff = 0;
-			}
-			console.log("X Y " + x + ' ' + y);
-			if(move_data.xDiff != 0 || move_data.yDiff != 0) {
-				io.emit('move', {player_id: player_slot, xDiff: move_data.xDiff, yDiff: move_data.yDiff});
-				player.xPos += move_data.xDiff;
-				player.yPos += move_data.yDiff;
-			}
+			input_data.player_id = player_slot;
+			// Falta validar con el physics engine
+			io.emit('input_data', input_data);
 		}
 	});
 });

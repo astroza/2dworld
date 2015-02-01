@@ -42,6 +42,7 @@ GameCore.prototype.tick = function() {
 		this.renderer.render();
 	}
 	this.world.Step(this.timeStep, this.velocityIterations, this.positionIterations);
+	this.world.ClearForces();
 }
 
 GameCore.prototype.init = function() {

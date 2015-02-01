@@ -6,6 +6,7 @@
 <script src="/js/pixi.dev.js"></script>
 <script src="/js/renderer.js"></script>
 <script src="/js/player.js"></script>
+<script src="/js/map.js"></script>
 <script src="/js/game_core.js"></script>
 <style>
 	body {
@@ -39,6 +40,7 @@
 	</div>
 	<script src="/js/dworld.js"></script>
 	<script>
+		var b2d = require('Box2D');
 		var game = new DWorld(document.getElementById('game'));
 		game.init();
 	</script>

@@ -1,5 +1,3 @@
-var xVel = 5;
-var yVel = 5;
 
 Player.prototype.destroy = function() {
 	// this.dWorld.stage.removeChild(this.sprite);
@@ -33,10 +31,15 @@ function DWorld(htmlElement) {
 		gameCore.destroyPlayer(playerInfo.player_id);
 	});
 	
-	this.socket.on('move', function(move_data) {
+	this.socket.on('input_data', function(input_data) {
+		var player = gameCore.players[input_data.player_id];
+		var center = player.body.GetWorldCenter();
+		player.body.SetPositionAndAngle({x: input_data.position.x, y: input_data.position.y}, input_data.angle);
+		player.body.ApplyImpulse({x: input_data.x_impulse, y: input_data.y_impulse}, center);
 	});
 	
 	this.gameCore = gameCore;
+	this.map = new Map(gameCore);
 }
 
 DWorld.prototype.init = function() {
@@ -49,22 +52,24 @@ DWorld.prototype.keyDown = function(evt) {
 		return;
 	}
 	
-	var sprite = this.players[this.meId].sprite;
-	var xDiff = 0; 
-	var yDiff = 0;
+	var impulse = 500;
+	var xImp = 0;
+	var yImp = 0;
+	
 	switch (evt.keyCode) {
 		case 38:  /* Up arrow was pressed */
-			yDiff = -yVel;
-		break;
+			yImp = impulse;
+			break;
 		case 40:  /* Down arrow was pressed */
-			yDiff = yVel;
-		break;
+			yImp = -impulse;
+			break;
 		case 37:  /* Left arrow was pressed */
-			xDiff = -xVel;
-		break;
+			xImp = -impulse;
+			break;
 		case 39:  /* Right arrow was pressed */
-			xDiff = xVel;
-		break;
+			xImp = impulse;
+			break;
 	}
-	this.socket.emit('move', {xDiff: xDiff, yDiff: yDiff});
+	var player = this.gameCore.players[this.meId];
+	this.socket.emit('input_data', {x_impulse: xImp, y_impulse: yImp, position: player.body.GetPosition(), angle: player.body.GetAngle() });
 }
