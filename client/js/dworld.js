@@ -34,7 +34,14 @@ function DWorld(htmlElement) {
 	this.socket.on('input_data', function(input_data) {
 		var player = gameCore.players[input_data.player_id];
 		var center = player.body.GetWorldCenter();
-		player.body.SetPositionAndAngle({x: input_data.position.x, y: input_data.position.y}, input_data.angle);
+		var lastInputTime = player.lastInputTime || 0;
+		
+		var now = input_data.time;
+		if(now - lastInputTime >= 2000) {
+			player.body.SetPositionAndAngle({x: input_data.position.x, y: input_data.position.y}, input_data.angle);
+			player.lastInputTime = now;
+		}
+		
 		player.body.ApplyImpulse({x: input_data.x_impulse, y: input_data.y_impulse}, center);
 	});
 	
@@ -71,5 +78,5 @@ DWorld.prototype.keyDown = function(evt) {
 			break;
 	}
 	var player = this.gameCore.players[this.meId];
-	this.socket.emit('input_data', {x_impulse: xImp, y_impulse: yImp, position: player.body.GetPosition(), angle: player.body.GetAngle() });
+	this.socket.emit('input_data', {x_impulse: xImp, y_impulse: yImp, position: player.body.GetPosition(), angle: player.body.GetAngle(),  time: Date.now()});
 }
