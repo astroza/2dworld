@@ -16,3 +16,5 @@ function Player(gameCore, name) {
 	this.body.SetAngularVelocity(0.8);
 	this.body.CreateFixture(fixtureDef);
 }
+
+module.exports = Player;

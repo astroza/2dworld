@@ -22,14 +22,15 @@ GameCore.prototype.digestInput = function(playerId, data) {
 
 GameCore.prototype.createPlayer = function(playerId, x, y) {
 	var player = new Player(this, 'Player ' + playerId);
+	player.body.SetPositionAndAngle({x: x, y: y}, 0);
 	this.players[playerId] = player;
 	if(this.renderer)
 		this.renderer.createPlayer(player);
 	
 }
 
-GameCore.prototype.destroyPlayer = function(player, x, y) {
-	
+GameCore.prototype.destroyPlayer = function(playerId, x, y) {
+	this.players[playerId] = null;
 }
 
 GameCore.prototype.tick = function() {
@@ -39,7 +40,8 @@ GameCore.prototype.tick = function() {
 			if(this.renderer)
 				this.renderer.updatePlayer(player);
 		}
-		this.renderer.render();
+		if(this.renderer)
+			this.renderer.render();
 	}
 	this.world.Step(this.timeStep, this.velocityIterations, this.positionIterations);
 	this.world.ClearForces();
@@ -51,3 +53,5 @@ GameCore.prototype.init = function() {
 		gameCore.tick();
 	}, 1000/60.0);
 };
+
+module.exports = GameCore;

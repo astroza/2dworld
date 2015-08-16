@@ -13,12 +13,14 @@ function Map(gameCore) {
 	bodyDef.position.Set(0, 0);
 	gameCore.world.CreateBody(bodyDef).CreateFixture(bxFixDef);
 
-	//bxFixDef.shape.SetAsBox(1, 100);
+	bxFixDef.shape.SetAsBox(1, 100);
 	// left wall
-	//bodyDef.position.Set(-1, 3);
-	//gameCore.world.CreateBody(bodyDef).CreateFixture(bxFixDef);
+	bodyDef.position.Set(-1, 3);
+	gameCore.world.CreateBody(bodyDef).CreateFixture(bxFixDef);
 	// right wall
-	//bodyDef.position.Set(stage.stageWidth/100 + 1, 3);
-	//gameCore.world.CreateBody(bodyDef).CreateFixture(bxFixDef);
+	bodyDef.position.Set(80, 3);
+	gameCore.world.CreateBody(bodyDef).CreateFixture(bxFixDef);
 	
 }
+
+module.exports = Map;

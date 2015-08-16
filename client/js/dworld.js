@@ -20,28 +20,28 @@ function DWorld(htmlElement) {
 		_dWorld.meId = playerId;
 		console.log("meId: " + playerId);
 	});
-	
-	this.socket.on('join', function(playerInfo) {
-		gameCore.createPlayer(playerInfo.player_id, 0, 0);
-		log('Player ' + playerInfo.player_id + ' has joined the game');
+
+	this.socket.on('join', function(player) {
+		gameCore.createPlayer(player.player_id, player.position.x, player.position.y);
+		log('Player ' + player.player_id + ' has joined the game');
 	});
-	
-	this.socket.on('leave', function(playerInfo) {
-		log('Player ' + playerInfo.player_id + ' has left the game');
-		gameCore.destroyPlayer(playerInfo.player_id);
+
+	this.socket.on('leave', function(player) {
+		log('Player ' + player.player_id + ' has left the game');
+		gameCore.destroyPlayer(player.player_id);
 	});
 	
 	this.socket.on('input_data', function(input_data) {
 		var player = gameCore.players[input_data.player_id];
 		var center = player.body.GetWorldCenter();
 		var lastInputTime = player.lastInputTime || 0;
-		
+
 		var now = input_data.time;
-		if(now - lastInputTime >= 2000) {
+		if(now - lastInputTime >= 1000) {
 			player.body.SetPositionAndAngle({x: input_data.position.x, y: input_data.position.y}, input_data.angle);
 			player.lastInputTime = now;
 		}
-		
+
 		player.body.ApplyImpulse({x: input_data.x_impulse, y: input_data.y_impulse}, center);
 	});
 	
